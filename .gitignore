@@ -1,0 +1,19 @@
+# IDEA配置
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Maven编译产物
+target/
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db

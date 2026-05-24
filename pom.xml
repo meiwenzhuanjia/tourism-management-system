@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.8</version>
+        <relativePath/>
+    </parent>
+
+    <!--聚合工程-->
+    <modules>
+        <module>scenic-common</module>
+        <module>scenic-dao</module>
+        <module>scenic-service</module>
+        <module>scenic-api</module>
+    </modules>
+
+    <groupId>com.trip</groupId>
+    <artifactId>scenic-area-management</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--统一版本管理-->
+
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 子模块 -->
+            <dependency>
+                <groupId>com.trip</groupId>
+                <artifactId>scenic-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.trip</groupId>
+                <artifactId>scenic-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.trip</groupId>
+                <artifactId>scenic-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 第三方依赖 -->
+
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>
