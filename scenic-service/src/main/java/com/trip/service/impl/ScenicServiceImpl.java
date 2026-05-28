@@ -22,10 +22,15 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public PageResult<ScenicSpot> getScenicList(ScenicQuery query) {
-        log.info("分页查询,参数{},{},{},{}",query);
         PageHelper.startPage(query.getPage(), query.getSize());
         List<ScenicSpot> list = scenicSpotMapper.getScenicList(query);
         Page<ScenicSpot> page = (Page<ScenicSpot>)list;
         return new PageResult<>(page.getTotal(), page.getResult(), query.getPage(), query.getSize());
+    }
+
+    @Override
+    public ScenicSpot getScenicDetail(Long id) {
+        ScenicSpot scenicSpot = scenicSpotMapper.getScenicDetail(id);
+        return scenicSpot;
     }
 }

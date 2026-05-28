@@ -10,4 +10,6 @@ import java.util.List;
 public interface ScenicSpotMapper {
 
     List<ScenicSpot> getScenicList(ScenicQuery query);
+
+    ScenicSpot getScenicDetail(Long id);
 }

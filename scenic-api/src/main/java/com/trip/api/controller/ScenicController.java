@@ -8,6 +8,7 @@ import com.trip.service.ScenicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +28,13 @@ public class ScenicController {
         log.info("分页查询,参数{},{},{},{}",query);
         PageResult<ScenicSpot> pageResult = scenicService.getScenicList(query);
         return Result.success(pageResult);
+    }
+
+    //获取景点详情
+    @GetMapping("/detail/{id}")
+    public Result getScenicDetail(@PathVariable Long id) {
+        log.info("查询详情,参数{}",id);
+        ScenicSpot scenicSpot = scenicService.getScenicDetail(id);
+        return Result.success(scenicSpot);
     }
 }
