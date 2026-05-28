@@ -1,0 +1,31 @@
+package com.trip.api.controller;
+
+import com.trip.common.query.ScenicQuery;
+import com.trip.common.result.PageResult;
+import com.trip.common.result.Result;
+import com.trip.dao.entity.ScenicSpot;
+import com.trip.service.ScenicService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequestMapping("/scenic")
+public class ScenicController {
+
+    @Autowired
+    private ScenicService scenicService;
+
+    //获取景点列表
+    @GetMapping ("/list")
+    public Result getScenicList(ScenicQuery query) {
+        log.info("分页查询,参数{},{},{},{}",query);
+        PageResult<ScenicSpot> pageResult = scenicService.getScenicList(query);
+        return Result.success(pageResult);
+    }
+}
