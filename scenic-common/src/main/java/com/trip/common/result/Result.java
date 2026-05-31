@@ -12,7 +12,7 @@ public class Result<T> {
     private String message;
     private T data;
 
-    public static <T> Result<T> success(T data) {
+    public static <T> Result<T> success(T data, String 添加成功) {
         return new Result<>(200, "success", data);
     }
 

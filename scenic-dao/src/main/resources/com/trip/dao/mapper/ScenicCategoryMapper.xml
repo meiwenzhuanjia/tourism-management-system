@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.trip.dao.mapper.ScenicCategoryMapper">
+
+    <!-- id 必须和 Mapper 接口的方法名一致 -->
+    <select id="selectCategoryList" resultType="com.trip.dao.entity.ScenicCategory">
+        SELECT
+        id,
+        category_name,
+        description,
+        icon_url,
+        sort_order,
+        status
+        FROM scenic_category
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY sort_order ASC
+    </select>
+
+    <select id="selectCategoryPageList" resultType="com.trip.dao.entity.ScenicCategory">
+        SELECT
+        id,
+        category_name,
+        description,
+        icon_url,
+        sort_order,
+        status,
+        create_time,
+        update_time
+        FROM scenic_category
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            AND is_deleted = 0
+        </where>
+        ORDER BY sort_order ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countCategories" resultType="int">
+        SELECT COUNT(*)
+        FROM scenic_category
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            AND is_deleted = 0
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.trip.dao.entity.ScenicCategory">
+        SELECT
+            id,
+            category_name,
+            description,
+            icon_url,
+            sort_order,
+            status,
+            create_time,
+            update_time
+        FROM scenic_category
+        WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <insert id="insertCategory" parameterType="com.trip.dao.entity.ScenicCategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scenic_category (
+            category_name,
+            description,
+            icon_url,
+            sort_order,
+            status
+        ) VALUES (
+                     #{categoryName},
+                     #{description},
+                     #{iconUrl},
+                     #{sortOrder},
+                     COALESCE(#{status}, 1)
+                 )
+    </insert>
+
+    <update id="updateCategory" parameterType="com.trip.dao.entity.ScenicCategory">
+        UPDATE scenic_category
+        <set>
+            <if test="categoryName != null">
+                category_name = #{categoryName},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="iconUrl != null">
+                icon_url = #{iconUrl},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteCategory">
+        UPDATE scenic_category
+        SET is_deleted = 1,
+            update_time = NOW()
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+</mapper>
