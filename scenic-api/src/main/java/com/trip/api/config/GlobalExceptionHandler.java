@@ -2,10 +2,11 @@ package com.trip.api.config;
 
 import com.trip.common.exception.BusinessException;
 import com.trip.common.result.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-// 全局异常处理
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -16,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception e) {
+        log.error("服务器内部错误", e);
         return Result.error(500, "服务器内部错误");
     }
 }

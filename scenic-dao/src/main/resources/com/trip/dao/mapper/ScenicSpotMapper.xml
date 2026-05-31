@@ -4,6 +4,79 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.dao.mapper.ScenicSpotMapper">
 
+    <!--管理员添加景点-->
+    <insert id="addScenic" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scenic_spot (
+            category_id,scenic_name,description,cover_image,location,longitude,latitude,open_time,price,stock,is_real_name,status,view_count,create_time,update_time,is_deleted
+        ) VALUES (
+            #{categoryId},#{scenicName},#{description},#{coverImage},#{location},#{longitude},#{latitude},#{openTime},#{price},#{stock},#{isRealName},#{status},0,NOW(),NOW(),0
+        )
+    </insert>
+
+    <!--管理员更新景区-->
+    <update id="updateScenic">
+        UPDATE scenic_spot
+        <set>
+            <if test="scenicSpot.categoryId != null">
+                category_id = #{scenicSpot.categoryId},
+            </if>
+            <if test="scenicSpot.scenicName != null and scenicSpot.scenicName != ''">
+                scenic_name = #{scenicSpot.scenicName},
+            </if>
+            <if test="scenicSpot.description != null">
+                description = #{scenicSpot.description},
+            </if>
+            <if test="scenicSpot.coverImage != null">
+                cover_image = #{scenicSpot.coverImage},
+            </if>
+            <if test="scenicSpot.location != null and scenicSpot.location != ''">
+                location = #{scenicSpot.location},
+            </if>
+            <if test="scenicSpot.longitude != null">
+                longitude = #{scenicSpot.longitude},
+            </if>
+            <if test="scenicSpot.latitude != null">
+                latitude = #{scenicSpot.latitude},
+            </if>
+            <if test="scenicSpot.openTime != null and scenicSpot.openTime != ''">
+                open_time = #{scenicSpot.openTime},
+            </if>
+            <if test="scenicSpot.price != null">
+                price = #{scenicSpot.price},
+            </if>
+            <if test="scenicSpot.stock != null">
+                stock = #{scenicSpot.stock},
+            </if>
+            <if test="scenicSpot.isRealName != null">
+                is_real_name = #{scenicSpot.isRealName},
+            </if>
+            <if test="scenicSpot.status != null">
+                status = #{scenicSpot.status},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!--管理员更新景区状态-->
+    <update id="updateScenicStatus">
+        UPDATE scenic_spot
+        SET status = #{status},
+            update_time = NOW()
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!--管理员删除景点-->
+    <delete id="deleteScenic">
+        UPDATE scenic_spot
+        SET is_deleted = 1,
+            update_time = NOW()
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </delete>
+
     <!--获取景点列表-->
     <select id="getScenicList" resultType="com.trip.dao.entity.ScenicSpot">
         SELECT
@@ -19,11 +92,61 @@
                 AND category_id = #{categoryId}
             </if>
         </where>
-        ORDER BY create_time DESC
+        ORDER BY
+        <choose>
+            <when test="sortType == 'hot'">
+                view_count DESC
+            </when>
+            <when test="sortType == 'new'">
+                create_time DESC
+            </when>
+            <when test="sortType == 'score'">
+                score DESC
+            </when>
+            <when test="sortType == 'price_asc'">
+                price ASC
+            </when>
+            <when test="sortType == 'price_desc'">
+                price DESC
+            </when>
+            <otherwise>
+                create_time DESC
+            </otherwise>
+        </choose>
     </select>
 
     <!--获取景点详情-->
     <select id="getScenicDetail" resultType="com.trip.dao.entity.ScenicSpot">
+        SELECT
+            id,category_id,scenic_name,description,cover_image,location,longitude,latitude,open_time,price,score,stock,is_real_name,status,view_count,create_time,update_time,is_deleted
+        FROM scenic_spot
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+
+    <!--管理员获取景区列表-->
+    <select id="getAdminScenicList" resultType="com.trip.dao.entity.ScenicSpot">
+        SELECT
+            s.id,s.category_id,s.scenic_name,s.description,s.cover_image,s.location,s.longitude,s.latitude,s.open_time,s.price,s.score,s.stock,s.is_real_name,s.status,s.view_count,s.create_time,s.update_time,s.is_deleted,c.category_name
+        FROM scenic_spot s
+        LEFT JOIN scenic_category c ON s.category_id = c.id
+        <where>
+            s.is_deleted = 0
+            <if test="keyword != null and keyword != ''">
+                AND s.scenic_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND s.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                AND s.status = #{status}
+            </if>
+        </where>
+        ORDER BY s.create_time DESC
+    </select>
+
+    <!--管理员获取景点详情-->
+    <select id="getAdminScenicDetail" resultType="com.trip.dao.entity.ScenicSpot">
         SELECT
             id,category_id,scenic_name,description,cover_image,location,longitude,latitude,open_time,price,score,stock,is_real_name,status,view_count,create_time,update_time,is_deleted
         FROM scenic_spot

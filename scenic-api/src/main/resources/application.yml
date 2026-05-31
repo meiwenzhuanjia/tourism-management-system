@@ -1,15 +1,23 @@
 spring:
   application:
     name: scenic-area-management
+    #配置数据库的连接信息
+  datasource:
+    url: jdbc:mysql://localhost:3306/tourism_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Lizisz00
   servlet:
     multipart:
-      max-file-size: 10MB # 10MB
-      max-request-size: 100MB # 100MB
-  profiles:
-    active: dev
+      #最大单个文件大小
+      max-file-size: 10MB
+      #最大请求大小
+      max-request-size: 100MB
 
 mybatis:
+  #mybatis日志
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+
 
