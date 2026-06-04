@@ -6,6 +6,7 @@ import com.trip.dao.entity.ScenicSpot;
 
 public interface AdminScenicService {
 
+
     PageResult<ScenicSpot> getAdminScenicList(AdminScenicQuery query);
 
     ScenicSpot getAdminScenicDetail(Long id);
@@ -17,5 +18,6 @@ public interface AdminScenicService {
     void updateScenicStatus(Long id, Integer status);
 
     void deleteScenic(Long id);
+
 
 }

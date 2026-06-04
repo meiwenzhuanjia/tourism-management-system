@@ -16,6 +16,7 @@ import java.util.Map;
 @RequestMapping("/admin/scenic")
 public class AdminScenicController {
 
+
     @Autowired
     private AdminScenicService adminScenicService;
 
@@ -67,4 +68,7 @@ public class AdminScenicController {
         adminScenicService.deleteScenic(id);
         return Result.success();
     }
+
 }
+
+
