@@ -22,7 +22,7 @@ public class ScenicController {
     public Result getScenicList(ScenicQuery query) {
         log.info("分页查询,参数{},{},{},{}", query);
         PageResult<ScenicSpot> pageResult = scenicService.getScenicList(query);
-        return Result.success(pageResult, "添加成功");
+        return Result.success(pageResult);
     }
 
     //获取景点详情
@@ -30,6 +30,6 @@ public class ScenicController {
     public Result getScenicDetail(@PathVariable Long id) {
         log.info("查询详情,参数{}", id);
         ScenicSpot scenicSpot = scenicService.getScenicDetail(id);
-        return Result.success(scenicSpot, "添加成功");
+        return Result.success(scenicSpot);
     }
 }

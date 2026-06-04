@@ -17,14 +17,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/category")
 public class AdminScenicCategoryController {
+
     @Autowired
     private ScenicCategoryService scenicCategoryService;
 
     @GetMapping("/list")
-    public Result<PageResult> list(
+    public Result getAdminCategoryList(
             @RequestParam(required = false) Integer status,
-            @RequestParam Integer page,
-            @RequestParam Integer size) {
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
 
         log.info("获取分类列表,status={}, page={}, size={}", status, page, size);
 
@@ -32,18 +33,20 @@ public class AdminScenicCategoryController {
         pageQuery.setPage(page);
         pageQuery.setSize(size);
 
-        return scenicCategoryService.getAdminCategoryPageList(status, pageQuery);
+        PageResult<ScenicCategory> pageResult = scenicCategoryService.getAdminCategoryPageList(status, pageQuery);
+        return Result.success(pageResult);
     }
 
     @GetMapping("/detail/{id}")
-    public Result<ScenicCategory> detail(@PathVariable Integer id) {
-        log.info("【管理员】获取分类详情，id={}", id);
-        return scenicCategoryService.getCategoryDetail(id);
+    public Result getAdminCategoryDetail(@PathVariable Integer id) {
+        log.info("获取分类详情,id={}", id);
+        ScenicCategory category = scenicCategoryService.getCategoryDetail(id);
+        return Result.success(category);
     }
 
     @PostMapping("/add")
-    public Result<Map<String, Integer>> add(@RequestBody AddCategoryRequest request) {
-        log.info("【管理员】添加分类，请求参数: {}", request);
+    public Result addCategory(@RequestBody AddCategoryRequest request) {
+        log.info("添加分类,参数{}", request);
 
         if (request.getCategoryName() == null || request.getCategoryName().trim().isEmpty()) {
             return Result.error(400, "分类名称不能为空");
@@ -61,12 +64,13 @@ public class AdminScenicCategoryController {
             return Result.error(400, "图标 URL 长度不能超过 500");
         }
 
-        return scenicCategoryService.addCategory(request);
+        Map<String, Integer> data = scenicCategoryService.addCategory(request);
+        return Result.success(data);
     }
 
     @PutMapping("/update/{id}")
-    public Result<Void> update(@PathVariable Integer id, @RequestBody UpdateCategoryRequest request) {
-        log.info("【管理员】更新分类，id={}, 请求参数: {}", id, request);
+    public Result updateCategory(@PathVariable Integer id, @RequestBody UpdateCategoryRequest request) {
+        log.info("更新分类,id={},参数{}", id, request);
 
         if (request.getCategoryName() == null || request.getCategoryName().trim().isEmpty()) {
             return Result.error(400, "分类名称不能为空");
@@ -92,12 +96,14 @@ public class AdminScenicCategoryController {
             return Result.error(400, "状态不能为空");
         }
 
-        return scenicCategoryService.updateCategory(id, request);
+        scenicCategoryService.updateCategory(id, request);
+        return Result.success();
     }
 
     @DeleteMapping("/delete/{id}")
-    public Result<Void> delete(@PathVariable Integer id) {
-        log.info("【管理员】删除分类，id={}", id);
-        return scenicCategoryService.deleteCategory(id);
+    public Result deleteCategory(@PathVariable Integer id) {
+        log.info("删除分类,id={}", id);
+        scenicCategoryService.deleteCategory(id);
+        return Result.success();
     }
 }

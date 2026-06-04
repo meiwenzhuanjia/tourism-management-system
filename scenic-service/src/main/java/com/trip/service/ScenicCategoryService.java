@@ -4,22 +4,22 @@ import com.trip.common.dto.AddCategoryRequest;
 import com.trip.common.dto.UpdateCategoryRequest;
 import com.trip.common.query.PageQuery;
 import com.trip.common.result.PageResult;
-import com.trip.common.result.Result;
 import com.trip.dao.entity.ScenicCategory;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ScenicCategoryService {
-    Result<List<ScenicCategory>> getCategoryList(Integer status);
 
-    Result<PageResult> getAdminCategoryPageList(Integer status, PageQuery pageQuery);
+    List<ScenicCategory> getCategoryList(Integer status);
 
-    Result<ScenicCategory> getCategoryDetail(Integer id);
+    PageResult<ScenicCategory> getAdminCategoryPageList(Integer status, PageQuery pageQuery);
 
-    Result<Map<String, Integer>> addCategory(AddCategoryRequest request);
+    ScenicCategory getCategoryDetail(Integer id);
 
-    Result<Void> updateCategory(Integer id, UpdateCategoryRequest request);
+    Map<String, Integer> addCategory(AddCategoryRequest request);
 
-    Result<Void> deleteCategory(Integer id);
+    void updateCategory(Integer id, UpdateCategoryRequest request);
+
+    void deleteCategory(Integer id);
 }

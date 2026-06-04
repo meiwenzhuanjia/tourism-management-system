@@ -21,9 +21,9 @@ public class ScenicCategoryController {
     private ScenicCategoryService scenicCategoryService;
 
     @GetMapping("/list")
-    public Result<List<ScenicCategory>> list(@RequestParam(required = false) Integer status) {
+    public Result list(@RequestParam(required = false) Integer status) {
         log.info("查询景点分类数据");
-        Result<List<ScenicCategory>> result = scenicCategoryService.getCategoryList(status);
-        return result;
+        List<ScenicCategory> list = scenicCategoryService.getCategoryList(status);
+        return Result.success(list);
     }
 }
