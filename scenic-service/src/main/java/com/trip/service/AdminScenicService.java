@@ -19,5 +19,4 @@ public interface AdminScenicService {
 
     void deleteScenic(Long id);
 
-
 }

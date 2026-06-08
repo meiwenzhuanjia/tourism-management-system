@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.dao.mapper.UserMapper">
+
+    <!--管理员查询用户列表-->
+    <select id="getAdminScenicList" resultType="com.trip.dao.entity.SysUser">
+        SELECT
+            id,username,nickname,phone,user_type,status,create_time
+        FROM sys_user
+        <where>
+            is_deleted = 0
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone LIKE CONCAT('%', #{phone}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!--管理员更新用户状态-->
+    <update id="updateUserStatus">
+        UPDATE sys_user
+        SET status = #{status},
+            update_time = NOW()
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </update>
+
+</mapper>
